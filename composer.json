@@ -1,0 +1,44 @@
+{
+    "name": "kennedy-osaze/laravel-api-response",
+    "description": "The package provides simple functionalities to render HTTP responses and convert Exceptions to JSON formats in API-based Laravel projects",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["laravel", "api", "json", "response"],
+    "authors": [
+        {
+            "name": "Kennedy Osaze",
+            "email": "me.osaze@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "ext-json": "*",
+        "kennedy-osaze/php-cs-fixer-config": "^2.0",
+        "orchestra/testbench": "^7.4",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "KennedyOsaze\\LaravelApiResponse\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KennedyOsaze\\LaravelApiResponse\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KennedyOsaze\\LaravelApiResponse\\LaravelApiResponseServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

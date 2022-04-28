@@ -1,0 +1,1 @@
+![Laravel API Response Logo](https://banners.beyondco.de/Laravel%20API%20Response.png?theme=dark&packageManager=composer+require&packageName=kennedy-osaze%2Flaravel-api-response&pattern=architect&style=style_1&description=Renders+consistent+HTTP+JSON+responses+for+API-based+projects&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)

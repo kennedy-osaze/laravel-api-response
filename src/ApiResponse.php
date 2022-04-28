@@ -31,7 +31,7 @@ class ApiResponse
 
     protected bool $shouldWrapResponse = true;
 
-    public static $formatValidationCallback;
+    public static $formatValidationErrorsCallback;
 
     public function __construct(int $statusCode, string $message = null, $data = null, array $headers = [])
     {
@@ -70,7 +70,7 @@ class ApiResponse
         return $response->setData($errors)->make();
     }
 
-    protected function make(): JsonResponse
+    public function make(): JsonResponse
     {
         $statusesWithNoContent = config('api-response.http_statuses_with_no_content');
 
@@ -81,23 +81,21 @@ class ApiResponse
 
     public function getValidationErrors(Validator $validator, Request $request): array
     {
-        if (is_callable(static::$formatValidationCallback)) {
-            return call_user_func_array(static::$formatValidationCallback, [$validator, $request]);
+        if (is_callable(static::$formatValidationErrorsCallback)) {
+            return call_user_func(static::$formatValidationErrorsCallback, $validator, $request);
         }
 
-        $normalizedMessages = array_unique(
-            Arr::dot($validator->errors()->getMessages())
-        );
+        $messages = array_unique(Arr::dot($validator->errors()->messages()));
 
         $result = new Collection([]);
 
-        collect($normalizedMessages)->each(function ($message, $key) use (&$result, $request) {
+        collect($messages)->each(function ($message, $key) use (&$result, $validator, $request) {
             $field = Str::before($key, '.');
 
             if (! $result->has($field)) {
                 $result = $result->put($field, [
                     'message' => $message,
-                    'rejected_value' => $request->input($field),
+                    'rejected_value' => $request->input($field) ?? data_get($validator->getData(), $field),
                 ]);
             }
         });
@@ -115,7 +113,11 @@ class ApiResponse
         $messageData = $this->getTranslatedMessageMeta($this->message, $data, $successful);
         $normalizedData = is_array($normalizedData) ? $data : $normalizedData;
 
-        $responseData = ['success' => $successful, 'message' => $messageData['message']];
+        $responseData = [
+            'success' => $successful,
+            'message' => $messageData['message'] ?? $this->message
+        ];
+
         $responseData += Arr::except($messageData, ['key', 'message']);
 
         if ($this->shouldWrapResponse && filled($normalizedData)) {
@@ -127,12 +129,18 @@ class ApiResponse
         return $responseData;
     }
 
-    private function getTranslatedMessageMeta(string $message, array &$data, bool $successful): array
+    protected function getTranslatedMessageMeta(string $message, array &$data, bool $successful): array
     {
         $fileKey = $successful ? 'success' : 'errors';
-        $translationFilename = config("api-response.translation.{$fileKey}");
+        $file = config("api-response.translation.{$fileKey}");
 
-        $translated = $this->extractTranslationDataFromResponsePayload($data, $message, $translationFilename);
+        if (! is_string($file)) {
+            return [];
+        }
+
+        $translationPrefix = "laravel-api-response::".config("api-response.translation.{$fileKey}");
+
+        $translated = $this->extractTranslationDataFromResponsePayload($data, $message, $translationPrefix);
 
         if ($successful) {
             return $translated;
@@ -141,7 +149,7 @@ class ApiResponse
         return array_merge($translated, $this->pullErrorCodeFromData($data, $message, $translated['key']));
     }
 
-    private function extractTranslationDataFromResponsePayload(array &$data, string $message, string $prefix)
+    protected function extractTranslationDataFromResponsePayload(array &$data, string $message, string $prefix)
     {
         $parameters = $this->parseStringToTranslationParameters($message);
 
@@ -150,7 +158,7 @@ class ApiResponse
         return $this->getTranslatedStringArray($parameters['name'], $attributes, $prefix);
     }
 
-    private function pullErrorCodeFromData(array &$data, string $message, ?string $translatedKey = null): array
+    protected function pullErrorCodeFromData(array &$data, string $message, ?string $translatedKey = null): array
     {
         if (array_key_exists('error_code', $data)) {
             return ['error_code' => (string) Arr::pull($data, 'error_code')];
@@ -163,15 +171,6 @@ class ApiResponse
         return [];
     }
 
-    public function setStatusCode(int $statusCode): void
-    {
-        if (! array_key_exists($statusCode, JsonResponse::$statusTexts)) {
-            throw new InvalidArgumentException("Invalid HTTP status code: [{$statusCode}]");
-        }
-
-        $this->statusCode = $statusCode;
-    }
-
     public function setData($data): static
     {
         return tap($this, fn (self $response) => $response->data = $data);
@@ -182,7 +181,16 @@ class ApiResponse
         return tap($this, fn (self $response) => $response->shouldWrapResponse = false);
     }
 
-    protected function normalizeData($data): ?array
+    protected function setStatusCode(int $statusCode): void
+    {
+        if (! array_key_exists($statusCode, JsonResponse::$statusTexts)) {
+            throw new InvalidArgumentException("Invalid HTTP status code: [{$statusCode}]");
+        }
+
+        $this->statusCode = $statusCode;
+    }
+
+    protected function normalizeData($data)
     {
         if (is_array($data) || is_null($data)) {
             return $data;
@@ -198,13 +206,14 @@ class ApiResponse
         };
     }
 
-    private function getDataWrapper(): ?string
+    protected function getDataWrapper(): ?string
     {
         if (! $this->shouldWrapResponse) {
             return null;
         }
 
-        return collect(config('api-response.data_wrappers'))->first(fn ($value, $key) => Str::is(Str::of($key)->replace('x', '*'), $this->statusCode)
+        return collect(config('api-response.data_wrappers'))->first(fn ($value, $key) =>
+            Str::is(Str::of($key)->replace('x', '*'), $this->statusCode)
         );
     }
 }

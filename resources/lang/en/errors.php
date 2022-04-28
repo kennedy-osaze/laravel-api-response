@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'Too Many Attempts' => 'Please wait a few minutes and try again.',
+    'Example Error' => 'Please wait a few minutes and try again.',
 
     /*
     |--------------------------------------------------------------------------
@@ -16,7 +16,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'not_found' => 'Resource not found.',
+    'example_code' => 'An example success message',
+    'validation_failed' => 'Validation Failed.',
 
     /*
     |--------------------------------------------------------------------------

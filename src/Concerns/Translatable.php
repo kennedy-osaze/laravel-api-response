@@ -47,6 +47,8 @@ trait Translatable
      * @param string $name
      * @param array<string, mixed> $attributes
      * @param string $string
+     *
+     * @return string
      */
     public function transformToTranslatableString(string $name, array $attributes = []): string
     {
@@ -65,6 +67,8 @@ trait Translatable
      * @param string $message
      * @param array<string, mixed> $attributes
      * @param array
+     *
+     * @return array
      */
     public function getTranslatedStringArray(string $message, array $attributes = [], ?string $prefix = null): array
     {

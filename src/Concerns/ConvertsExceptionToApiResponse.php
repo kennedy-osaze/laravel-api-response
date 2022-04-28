@@ -3,6 +3,7 @@
 namespace KennedyOsaze\LaravelApiResponse\Concerns;
 
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,13 +40,13 @@ trait ConvertsExceptionToApiResponse
     protected function prepareApiException(Throwable $e, Request $request)
     {
         return match (true) {
-            $e instanceof NotFoundHttpException => with($e, function ($e) {
-                $message = (string) with($e->getMessage(), fn ($message) => blank($message) || Str::contains($message, 'No query results for model') ? 'Resource not found.' : $message
-                );
+            $e instanceof NotFoundHttpException, $e instanceof ModelNotFoundException => with($e, function ($e) {
+                $message = (string) with($e->getMessage(), function ($message) {
+                    return blank($message) || Str::contains($message, 'No query results for model') ? 'Resource not found.' : $message;
+                });
 
                 return new NotFoundHttpException($message, $e);
-            }
-            ),
+            }),
             $e instanceof AuthenticationException => new HttpException(401, $e->getMessage(), $e),
             $e instanceof UnauthorizedException => new HttpException(403, $e->getMessage(), $e),
             default => $e,

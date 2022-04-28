@@ -1,9 +1,9 @@
-/.art export-ignore
-/.editorconfig export-ignore
-/.github export-ignore
-/.gitattributes export-ignore
-/.gitignore export-ignore
-/CHANGELOG.md export-ignore
-/phpunit.xml.dist export-ignore
-/tests export-ignore
-/.php-cs-fixer.dist.php export-ignore
+# Ignore all test and documentation with "export-ignore".
+/.editorconfig           export-ignore
+/.gitattributes          export-ignore
+/.github                 export-ignore
+/.gitignore              export-ignore
+/.php-cs-fixer.dist.php  export-ignore
+/CHANGELOG.md            export-ignore
+/phpunit.xml.dist        export-ignore
+/tests                   export-ignore

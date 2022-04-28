@@ -16,6 +16,6 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'example_code' => 'Example success message',
+    'example_code' => 'Example success message, :status',
 
 ];

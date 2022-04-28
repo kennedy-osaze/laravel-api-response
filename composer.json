@@ -1,21 +1,31 @@
 {
     "name": "kennedy-osaze/laravel-api-response",
-    "description": "The package provides simple functionalities to render HTTP responses and convert Exceptions to JSON formats in API-based Laravel projects",
+    "description": "Renders consistent HTTP JSON responses for API-based projects",
+    "homepage": "https://github.com/kennedy-osaze/laravel-api-response",
     "type": "library",
     "license": "MIT",
-    "keywords": ["laravel", "api", "json", "response"],
+    "keywords": [
+        "laravel",
+        "api",
+        "json",
+        "response"
+    ],
     "authors": [
         {
             "name": "Kennedy Osaze",
-            "email": "me.osaze@gmail.com"
+            "email": "me.osaze@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "illuminate/contracts": "^8.0|^9.10",
+        "illuminate/http": "^8.0|^9.10",
+        "illuminate/translation": "^9.10"
     },
     "require-dev": {
-        "ext-json": "*",
         "kennedy-osaze/php-cs-fixer-config": "^2.0",
+        "mockery/mockery": "^1.5",
         "orchestra/testbench": "^7.4",
         "phpunit/phpunit": "^9.5"
     },
@@ -26,8 +36,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "KennedyOsaze\\LaravelApiResponse\\Test\\": "tests/"
+            "KennedyOsaze\\LaravelApiResponse\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     },
     "config": {
         "sort-packages": true

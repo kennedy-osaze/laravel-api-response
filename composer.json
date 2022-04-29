@@ -19,13 +19,12 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^8.0|^9.10",
-        "illuminate/http": "^8.0|^9.10",
+        "illuminate/contracts": "^9.10",
+        "illuminate/http": "^9.10",
         "illuminate/translation": "^9.10"
     },
     "require-dev": {
         "kennedy-osaze/php-cs-fixer-config": "^2.0",
-        "mockery/mockery": "^1.5",
         "nunomaduro/collision": "^6.2",
         "orchestra/testbench": "^7.4",
         "phpunit/phpunit": "^9.5"

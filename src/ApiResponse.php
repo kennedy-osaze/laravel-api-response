@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use InvalidArgumentException;
@@ -87,20 +86,22 @@ class ApiResponse
 
         $messages = array_unique(Arr::dot($validator->errors()->messages()));
 
-        $result = new Collection([]);
+        $result = [];
+        $has_rejected_data = ! empty($validator->getRules());
 
-        collect($messages)->each(function ($message, $key) use (&$result, $validator, $request) {
+        collect($messages)->each(function ($message, $key) use (&$result, $validator, $request, $has_rejected_data) {
             $field = Str::before($key, '.');
 
-            if (! $result->has($field)) {
-                $result = $result->put($field, [
-                    'message' => $message,
-                    'rejected_value' => $request->input($field) ?? data_get($validator->getData(), $field),
-                ]);
+            if (! array_key_exists($field, $result)) {
+                $result[$field] = ['message' => $message];
+
+                if ($has_rejected_data) {
+                    $result[$field]['rejected_value'] = $request->input($field) ?? data_get($validator->getData(), $field);
+                }
             }
         });
 
-        return $result->all();
+        return $result;
     }
 
     protected function prepareResponseData(): ?array

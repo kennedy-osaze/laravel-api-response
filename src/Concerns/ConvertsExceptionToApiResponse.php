@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
@@ -18,7 +19,7 @@ use Throwable;
 
 trait ConvertsExceptionToApiResponse
 {
-    public function renderApiResponse(Throwable $exception, Request $request)
+    public function renderApiResponse(Throwable $exception, Request $request): JsonResponse|Response
     {
         $exception = $this->prepareApiException($exception, $request);
 
@@ -37,7 +38,7 @@ trait ConvertsExceptionToApiResponse
         return ApiResponse::create(500, 'Server Error', $this->convertExceptionToArray($exception));
     }
 
-    protected function prepareApiException(Throwable $e, Request $request)
+    protected function prepareApiException(Throwable $e, Request $request): Throwable
     {
         return match (true) {
             $e instanceof NotFoundHttpException, $e instanceof ModelNotFoundException => with($e, function ($e) {
@@ -76,8 +77,8 @@ trait ConvertsExceptionToApiResponse
         return ApiResponse::create($statusCode, $message, $data, $headers);
     }
 
-    protected function shouldRenderHtmlOnException()
+    protected function shouldRenderHtmlOnException(): bool
     {
-        return config('api-response.render_html_on_exception');
+        return (bool) config('api-response.render_html_on_exception');
     }
 }

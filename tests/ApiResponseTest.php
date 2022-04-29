@@ -352,6 +352,8 @@ class ApiResponseTest extends TestCase
         ], $responseData['errors']);
         $this->assertArrayHasKey('error_messages', $responseData['errors']);
         $this->assertSame($validator->errors()->all(), $responseData['errors']['error_messages']);
+
+        ApiResponse::$formatValidationErrorsCallback = null;
     }
 
     public function testSuccessfulResponseMessageIsTranslatedCorrectly()

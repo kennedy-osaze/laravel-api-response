@@ -26,6 +26,7 @@
     "require-dev": {
         "kennedy-osaze/php-cs-fixer-config": "^2.0",
         "mockery/mockery": "^1.5",
+        "nunomaduro/collision": "^6.2",
         "orchestra/testbench": "^7.4",
         "phpunit/phpunit": "^9.5"
     },
@@ -40,7 +41,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "./vendor/bin/testbench package:test"
     },
     "config": {
         "sort-packages": true

@@ -18,9 +18,7 @@ class ExceptionsHandlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->request = request();
-
-        $this->handler = new ExceptionHandler($this->app);
+        $this->handler = $this->app->make(ExceptionHandler::class);
     }
 
     public function getEnvironmentSetUp($app)
@@ -33,9 +31,7 @@ class ExceptionsHandlerTest extends TestCase
         $validator = Validator::make([], ['name' => 'required']);
         $exception = new ValidationException($validator);
 
-        // $exception = ValidationException::withMessages(['name' => 'Dummy error occurred']);
-
-        $response = $this->handler->renderApiResponse($exception, $this->request);
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
 
         $this->assertSame(422, $response->status());
         $this->assertSame([
@@ -52,7 +48,7 @@ class ExceptionsHandlerTest extends TestCase
     {
         $exception = ValidationException::withMessages(['key' => 'An error']);
 
-        $response = $this->handler->renderApiResponse($exception, $this->request);
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
 
         $this->assertSame(422, $response->status());
         $this->assertSame([
@@ -66,7 +62,7 @@ class ExceptionsHandlerTest extends TestCase
 
     public function testHttpExceptionReturnsCorrectResponse()
     {
-        $response = $this->handler->renderApiResponse(new HttpException(403, 'Error message'), $this->request);
+        $response = $this->handler->renderApiResponse(new HttpException(403, 'Error message'), $this->app->request);
 
         $this->assertSame(403, $response->status());
         $this->assertSame(['success' => false, 'message' => 'Error message'], $response->getData(true));
@@ -77,8 +73,8 @@ class ExceptionsHandlerTest extends TestCase
         $exceptionOne = new NotFoundHttpException('Cannot find something');
         $exceptionTwo = new AuthenticationException('Authentication failed');
 
-        $responseOne = $this->handler->renderApiResponse($exceptionOne, $this->request);
-        $responseTwo = $this->handler->renderApiResponse($exceptionTwo, $this->request);
+        $responseOne = $this->handler->renderApiResponse($exceptionOne, $this->app->request);
+        $responseTwo = $this->handler->renderApiResponse($exceptionTwo, $this->app->request);
 
         $this->assertSame(404, $responseOne->status());
         $this->assertSame(401, $responseTwo->status());
@@ -90,7 +86,7 @@ class ExceptionsHandlerTest extends TestCase
     public function testUnpreparedExceptionReturns500Response()
     {
         $exception = new Exception('A random error');
-        $response = $this->handler->renderApiResponse($exception, $this->request);
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
 
         $this->assertSame(500, $response->status());
         $this->assertSame('Server Error', $response->getData('true')['message']);
@@ -101,7 +97,7 @@ class ExceptionsHandlerTest extends TestCase
         config()->set('app.debug', true);
 
         $exception = new Exception('A random error');
-        $response = $this->handler->renderApiResponse($exception, $this->request);
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
 
         $this->assertSame(500, $response->status());
         collect(['message', 'exception', 'file', 'line', 'trace'])->each(fn ($key) =>
@@ -114,7 +110,7 @@ class ExceptionsHandlerTest extends TestCase
         config()->set('api-response.render_html_on_exception', true);
 
         $exception = new Exception('A random error');
-        $response = $this->handler->renderApiResponse($exception, $this->request);
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
 
         $this->assertSame(500, $response->status());
         $this->assertStringContainsString('<!DOCTYPE html>', $response->getContent());

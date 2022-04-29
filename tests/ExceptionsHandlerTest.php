@@ -23,7 +23,9 @@ class ExceptionsHandlerTest extends TestCase
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('api-response.validation', ['code' => 422, 'message' => 'validation_failed']);
+        parent::getEnvironmentSetUp($app);
+
+        $app->config->set('api-response.validation', ['code' => 422, 'message' => 'validation_failed']);
     }
 
     public function testValidationExceptionReturnsCorrectResponse()
@@ -94,7 +96,7 @@ class ExceptionsHandlerTest extends TestCase
 
     public function testUnpreparedExceptionReturnsMinimalResponseWhenDebugModeIsDisabled()
     {
-        config()->set('app.debug', true);
+        $this->app->config->set('app.debug', true);
 
         $exception = new Exception('A random error');
         $response = $this->handler->renderApiResponse($exception, $this->app->request);
@@ -107,7 +109,7 @@ class ExceptionsHandlerTest extends TestCase
 
     public function testExceptionReturnsViewWhenReturnHtmlIsEnabledOnException()
     {
-        config()->set('api-response.render_html_on_exception', true);
+        $this->app->config->set('api-response.render_html_on_exception', true);
 
         $exception = new Exception('A random error');
         $response = $this->handler->renderApiResponse($exception, $this->app->request);

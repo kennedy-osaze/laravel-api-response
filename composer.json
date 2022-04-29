@@ -24,7 +24,6 @@
     },
     "require-dev": {
         "kennedy-osaze/php-cs-fixer-config": "^2.0",
-        "nunomaduro/collision": "^6.2",
         "orchestra/testbench": "^7.4",
         "phpunit/phpunit": "^9.5"
     },

@@ -1,15 +1,14 @@
 {
     "name": "kennedy-osaze/laravel-api-response",
     "description": "Renders consistent HTTP JSON responses for API-based projects",
-    "homepage": "https://github.com/kennedy-osaze/laravel-api-response",
-    "type": "library",
-    "license": "MIT",
     "keywords": [
         "laravel",
         "api",
         "json",
         "response"
     ],
+    "homepage": "https://github.com/kennedy-osaze/laravel-api-response",
+    "license": "MIT",
     "authors": [
         {
             "name": "Kennedy Osaze",

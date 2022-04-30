@@ -38,7 +38,7 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/testbench package:test"
+        "test": "./vendor/bin/phpunit"
     },
     "config": {
         "sort-packages": true

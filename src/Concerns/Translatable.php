@@ -29,6 +29,10 @@ trait Translatable
 
         if (! empty($stringParts)) {
             foreach (explode('|', $stringParts[0]) as $keyValue) {
+                if ($keyValue === '') {
+                    continue;
+                }
+
                 $parts = explode('=', $keyValue);
                 $attributes[$parts[0]] = $parts[1] ?? '';
             }
@@ -56,7 +60,7 @@ trait Translatable
             return $name;
         }
 
-        return $name.':'.http_build_query(Arr::dot($attributes), '', '|');
+        return rtrim($name.':'.http_build_query(Arr::dot($attributes), '', '|'), '=:|');
     }
 
     /**

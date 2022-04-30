@@ -5,7 +5,10 @@ namespace KennedyOsaze\LaravelApiResponse\Concerns;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Pagination\AbstractCursorPaginator;
+use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Validation\ValidationException;
 use KennedyOsaze\LaravelApiResponse\ApiResponse;
 use Throwable;
@@ -34,11 +37,26 @@ trait RendersApiResponse
 
     public function successResponse(string $message, $data = null, int $status = 200, array $headers = []): JsonResponse
     {
-        if ($data instanceof ResourceCollection) {
-            return ApiResponse::fromJsonResponse($data->response()->withHeaders($headers), $message);
+        return ApiResponse::create($status, $message, $data, $headers);
+    }
+
+    public function resourceResponse(JsonResource $resource, string $message, int $status = 200, array $headers = []): JsonResponse
+    {
+        if (! $resource instanceof ResourceCollection && blank($resource->with) && blank($resource->additional)) {
+            return ApiResponse::create($status, $message, $resource, $headers);
         }
 
-        return ApiResponse::create($status, $message, $data, $headers);
+        $response = $resource->response()->withHeaders($headers)->setStatusCode($status);
+
+        return ApiResponse::fromJsonResponse($response, $message, true);
+    }
+
+    public function resourceCollectionResponse(
+        ResourceCollection $collection, string $message, bool $wrap = true, int $status = 200, array $headers = []
+    ): JsonResponse {
+        $response = $collection->response()->withHeaders($headers)->setStatusCode($status);
+
+        return ApiResponse::fromJsonResponse($response, $message, $wrap);
     }
 
     public function unauthenticatedResponse(string $message): JsonResponse

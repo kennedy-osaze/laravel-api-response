@@ -38,7 +38,7 @@ class ExceptionsHandlerTest extends TestCase
         $this->assertSame(422, $response->status());
         $this->assertSame([
             'success' => false,
-            "message" => "Validation Failed.",
+            'message' => 'Validation Failed.',
             'errors' => ['name' => [
                 'message' => $validator->errors()->first(),
                 'rejected_value' => null,
@@ -55,7 +55,7 @@ class ExceptionsHandlerTest extends TestCase
         $this->assertSame(422, $response->status());
         $this->assertSame([
             'success' => false,
-            "message" => "Validation Failed.",
+            'message' => 'Validation Failed.',
             'errors' => ['key' => [
                 'message' => 'An error',
             ]],

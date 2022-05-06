@@ -14,7 +14,7 @@ class DummyResourceCollection extends ResourceCollection
             'data' => $this->collection,
             'link' => [
                 'self' => 'link-value',
-            ]
+            ],
         ];
     }
 

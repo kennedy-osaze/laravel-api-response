@@ -162,7 +162,7 @@ class ApiResponseTest extends TestCase
 
         $model = DummyModel::create(['name' => 'Kennedy']);
         DummyModel::insert(Collection::times(5, fn ($number) => [
-            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now()
+            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now(),
         ])->toArray());
 
         $resource = new DummyResource($model);
@@ -176,13 +176,13 @@ class ApiResponseTest extends TestCase
         $this->assertSame([
             'success' => true,
             'message' => 'Dummy Model Created',
-            'data' => $resource->resolve()
+            'data' => $resource->resolve(),
         ], $responseDataA);
         $this->assertSame($responseDataA, $responseDataB);
         $this->assertSame([
             'success' => true,
             'message' => 'Dummy Model Created',
-            'data' => ['data' => $resource->toArray(request())]
+            'data' => ['data' => $resource->toArray(request())],
         ], $responseDataC);
         $this->assertCount(6, $responseDataD['data']);
     }
@@ -192,7 +192,7 @@ class ApiResponseTest extends TestCase
         DummyModel::migrate();
 
         DummyModel::insert(Collection::times(5, fn ($number) => [
-            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now()
+            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now(),
         ])->toArray());
 
         $collectionA = new DummyResourceCollection(DummyModel::all());
@@ -264,7 +264,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame([
             'success' => true,
             'message' => 'Dummy Message',
-            'name' => 'Kennedy'
+            'name' => 'Kennedy',
         ], $response->getData(true));
     }
 
@@ -291,7 +291,7 @@ class ApiResponseTest extends TestCase
     {
         $request = request()->merge([
             'user' => ['names' => ['first' => null, 'last' => 'O']],
-            'addresses' => [['country' => 'Nigeria', 'city' => null]]
+            'addresses' => [['country' => 'Nigeria', 'city' => null]],
         ]);
 
         $rules = [
@@ -309,7 +309,7 @@ class ApiResponseTest extends TestCase
 
         $this->assertSame($response->status(), 422);
         $this->assertTrue(Arr::has($responseData, [
-            'errors.user.message', 'errors.user.rejected_value.names', 'errors.addresses.message', 'errors.addresses.rejected_value.0'
+            'errors.user.message', 'errors.user.rejected_value.names', 'errors.addresses.message', 'errors.addresses.rejected_value.0',
         ]));
         $this->assertNotContains('Not less than 3', collect($responseData['errors'])->pluck('message')->all());
     }
@@ -444,13 +444,13 @@ class ApiResponseTest extends TestCase
         $this->assertSame([
             'success' => false,
             'message' => 'Example error message with yes',
-            'error_code' => 'error_code_name'
+            'error_code' => 'error_code_name',
         ], $responseDataA);
 
         $this->assertSame([
-            "success" => true,
-            "message" => "Example success message, okay",
-            "data" => ["user" => ["name" => "Kennedy"]],
+            'success' => true,
+            'message' => 'Example success message, okay',
+            'data' => ['user' => ['name' => 'Kennedy']],
         ], $responseDataB);
     }
 }

@@ -52,13 +52,13 @@ class RendersApiResponseTraitTest extends TestCase
         $this->assertSame($response2->status(), $status);
 
         $this->assertSame([
-            'success' => true, 'message' => $message, 'data' => $data1->resolve()
+            'success' => true, 'message' => $message, 'data' => $data1->resolve(),
         ], $response1->getData(true));
 
         $this->assertArrayHasKey('x-test', $response1->headers->all());
 
         $this->assertSame([
-            'success' => true, 'message' => $message, 'data' => ['data' => $data2->resolve()] + $data2->additional
+            'success' => true, 'message' => $message, 'data' => ['data' => $data2->resolve()] + $data2->additional,
         ], $response2->getData(true));
     }
 
@@ -67,7 +67,7 @@ class RendersApiResponseTraitTest extends TestCase
         DummyModel::migrate();
 
         DummyModel::insert(Collection::times(5, fn ($number) => [
-            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now()
+            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now(),
         ])->toArray());
 
         $message = 'Dummy message';
@@ -76,13 +76,11 @@ class RendersApiResponseTraitTest extends TestCase
         $data2 = new DummyResourceCollection(DummyModel::paginate(2));
         $data3 = (new DummyResourceCollection(DummyModel::all()))->useParentToArray(false);
 
-
         $response1 = $this->controller->resourceCollectionResponse($data1, $message);
         $response2 = $this->controller->resourceCollectionResponse($data2, $message);
         $response3 = $this->controller->resourceCollectionResponse($data3, $message, false);
 
-        collect([$response1, $response2, $response3])->each(fn ($response) =>
-            $this->assertSame('Dummy message', $response->getData(true)['message'])
+        collect([$response1, $response2, $response3])->each(fn ($response) => $this->assertSame('Dummy message', $response->getData(true)['message'])
         );
 
         $this->assertSame(DummyModel::all(['id', 'name'])->toArray(), $response1->getData(true)['data']);
@@ -115,8 +113,8 @@ class RendersApiResponseTraitTest extends TestCase
             'errors' => [
                 'name' => [
                     'message' => $validator->errors()->first(),
-                    'rejected_value' => null
-                ]
+                    'rejected_value' => null,
+                ],
             ],
         ], $response->getData(true));
     }

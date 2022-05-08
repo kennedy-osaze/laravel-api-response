@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 trait Translatable
 {
     /**
-     * Transform a string to parameters used for translation
+     * Transform a string to parameters used for translation.
      *
      * The string is of the format 'name:key1=value1|key2=value2'
      *
@@ -42,7 +42,7 @@ trait Translatable
     }
 
     /**
-     * Transforms the parameters into a string parsable for translation
+     * Transforms the parameters into a string parsable for translation.
      *
      * Used like this: $this->transformToTranslatableString('name', ['key1' => 'value1', 'key2' => 'value2'])
      *

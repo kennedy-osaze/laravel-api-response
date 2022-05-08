@@ -116,7 +116,7 @@ class ApiResponse
 
         $responseData = [
             'success' => $successful,
-            'message' => $messageData['message'] ?? $this->message
+            'message' => $messageData['message'] ?? $this->message,
         ];
 
         $responseData += Arr::except($messageData, ['key', 'message']);
@@ -139,7 +139,7 @@ class ApiResponse
             return [];
         }
 
-        $translationPrefix = "laravel-api-response::".config("api-response.translation.{$fileKey}");
+        $translationPrefix = 'laravel-api-response::'.config("api-response.translation.{$fileKey}");
 
         $translated = $this->extractTranslationDataFromResponsePayload($data, $message, $translationPrefix);
 

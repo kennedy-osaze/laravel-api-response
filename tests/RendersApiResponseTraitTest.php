@@ -15,7 +15,7 @@ class RendersApiResponseTraitTest extends TestCase
 {
     private DummyController $controller;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

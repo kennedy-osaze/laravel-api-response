@@ -14,7 +14,7 @@ class ExceptionsHandlerTest extends TestCase
 {
     protected ExceptionHandler $handler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

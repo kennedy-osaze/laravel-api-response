@@ -8,7 +8,7 @@ class TranslatableTraitTest extends TestCase
 {
     private TranslatableDummyClass $class;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

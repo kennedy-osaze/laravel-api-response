@@ -41,13 +41,15 @@ trait ConvertsExceptionToApiResponse
     protected function prepareApiException(Throwable $e, Request $request): Throwable
     {
         return match (true) {
-            $e instanceof NotFoundHttpException, $e instanceof ModelNotFoundException => with($e, function ($e) {
-                $message = (string) with($e->getMessage(), function ($message) {
-                    return blank($message) || Str::contains($message, 'No query results for model') ? 'Resource not found.' : $message;
-                });
+            $e instanceof NotFoundHttpException, $e instanceof ModelNotFoundException => with(
+                $e, function ($e) {
+                    $message = (string) with($e->getMessage(), function ($message) {
+                        return blank($message) || Str::contains($message, 'No query results for model') ? 'Resource not found.' : $message;
+                    });
 
-                return new NotFoundHttpException($message, $e);
-            }),
+                    return new NotFoundHttpException($message, $e);
+                }
+            ),
             $e instanceof AuthenticationException => new HttpException(401, $e->getMessage(), $e),
             $e instanceof UnauthorizedException => new HttpException(403, $e->getMessage(), $e),
             default => $e,

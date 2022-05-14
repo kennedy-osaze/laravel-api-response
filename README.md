@@ -3,7 +3,7 @@
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kennedy-osaze/laravel-api-response/tests?label=CI)](https://github.com/kennedy-osaze/laravel-api-response/actions?query=workflow%3ACI+branch%3Amain)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kennedy-osaze/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/kennedy-osaze/laravel-api-response)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/kennedy-osaze/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/kennedy-osaze/laravel-api-response)
+[![Total Downloads](https://img.shields.io/packagist/dt/kennedy-osaze/laravel-api-response)](https://packagist.org/packages/kennedy-osaze/laravel-api-response)
 
 <!--delete-->
 

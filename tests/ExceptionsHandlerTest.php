@@ -139,23 +139,23 @@ class ExceptionsHandlerTest extends TestCase
                 [
                     'success' => false,
                     'message' => 'An error occurred',
-                    'error' => ['content' => 'This is a failed response']
-                ]
+                    'error' => ['content' => 'This is a failed response'],
+                ],
             ],
             [
                 new HttpResponseException(new JsonResponse(['message' => 'Failed response'], 400)),
                 [
                     'success' => false,
                     'message' => 'Failed response',
-                ]
+                ],
             ],
             [
                 new HttpResponseException(new JsonResponse(['error' => ['code' => '012']], 400)),
                 [
                     'success' => false,
                     'message' => JsonResponse::$statusTexts[400],
-                    'error' => ['code' => '012']
-                ]
+                    'error' => ['code' => '012'],
+                ],
             ],
         ];
     }

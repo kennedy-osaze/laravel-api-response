@@ -4,9 +4,12 @@ namespace KennedyOsaze\LaravelApiResponse\Tests;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use KennedyOsaze\LaravelApiResponse\Tests\Fakes\ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -116,5 +119,44 @@ class ExceptionsHandlerTest extends TestCase
 
         $this->assertSame(500, $response->status());
         $this->assertStringContainsString('<!DOCTYPE html>', $response->getContent());
+    }
+
+    /**
+     * @dataProvider getHttpResponseExceptionProvider
+     */
+    public function testHttpResponseExceptionReturnsResponseDataCorrectly($exception, $responseData)
+    {
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
+
+        $this->assertSame($responseData, $response->getData(true));
+    }
+
+    public function getHttpResponseExceptionProvider()
+    {
+        return [
+            [
+                new HttpResponseException(new Response('This is a failed response', 400)),
+                [
+                    'success' => false,
+                    'message' => 'An error occurred',
+                    'error' => ['content' => 'This is a failed response']
+                ]
+            ],
+            [
+                new HttpResponseException(new JsonResponse(['message' => 'Failed response'], 400)),
+                [
+                    'success' => false,
+                    'message' => 'Failed response',
+                ]
+            ],
+            [
+                new HttpResponseException(new JsonResponse(['error' => ['code' => '012']], 400)),
+                [
+                    'success' => false,
+                    'message' => JsonResponse::$statusTexts[400],
+                    'error' => ['code' => '012']
+                ]
+            ],
+        ];
     }
 }

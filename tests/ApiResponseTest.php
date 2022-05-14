@@ -149,7 +149,7 @@ class ApiResponseTest extends TestCase
 
         $responseData = ['success' => true, 'user' => ['name' => 'Kennedy']];
 
-        $this->assertSame(['success' => true, 'message' => ''] + $data, $responseJsonA->getData(true));
+        $this->assertSame(['success' => true, 'message' => 'OK'] + $data, $responseJsonA->getData(true));
         $this->assertSame($responseJsonA->headers->get('x-dummy'), 'Test');
         $this->assertSame(['success' => true, 'message' => 'Dummy Message'] + $data, $responseDataB);
         $this->assertSame(['success' => true, 'message' => 'Dummy Message'] + $data, $responseDataC);

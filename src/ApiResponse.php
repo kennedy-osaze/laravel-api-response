@@ -50,11 +50,12 @@ class ApiResponse
     public static function fromJsonResponse(JsonResponse $response, string $message = null, bool $wrap = false): JsonResponse
     {
         $data = $response->getData(true);
+        $status = $response->status();
 
         $responseData = is_array($data) ? $data : ['message_data' => $data];
-        $message = (string) ($message ?: Arr::pull($responseData, 'message', ''));
+        $message = (string) ($message ?: Arr::pull($responseData, 'message', JsonResponse::$statusTexts[$status]));
 
-        $response = new static($response->status(), $message, $responseData, $response->headers->all());
+        $response = new static($status, $message, $responseData, $response->headers->all());
 
         return $response->unless($wrap, fn (self $response) => $response->ignoreDataWrapper())->make();
     }

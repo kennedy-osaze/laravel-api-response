@@ -8,6 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
@@ -58,19 +59,19 @@ trait ConvertsExceptionToApiResponse
 
     protected function getExceptionResponse(Throwable $exception, Request $request): ?JsonResponse
     {
-        if ($exception instanceof HttpResponseException) {
-            $response = $exception->getResponse();
-
-            return $response instanceof JsonResponse
-                ? ApiResponse::fromJsonResponse($response, 'An error occurred')
-                : ApiResponse::create($response->getStatusCode(), 'An error occurred', ['content' => $response->getContent()]);
-        }
-
         if ($exception instanceof ValidationException) {
             return ApiResponse::fromFailedValidation($exception->validator, $request);
         }
 
-        return null;
+        if (! $exception instanceof HttpResponseException) {
+            return null;
+        }
+
+        $response = $exception->getResponse();
+
+        return $response instanceof JsonResponse
+            ? ApiResponse::fromJsonResponse($response)
+            : ApiResponse::create($response->getStatusCode(), 'An error occurred', ['content' => $response->getContent()]);
     }
 
     protected function convertHttpExceptionToJsonResponse(HttpExceptionInterface $exception): JsonResponse

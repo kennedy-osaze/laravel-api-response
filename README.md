@@ -1,7 +1,7 @@
 ![Laravel API Response Logo](https://banners.beyondco.de/Laravel%20API%20Response.png?theme=dark&packageManager=composer+require&packageName=kennedy-osaze%2Flaravel-api-response&pattern=architect&style=style_1&description=Renders+consistent+HTTP+JSON+responses+for+API-based+projects&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kennedy-osaze/laravel-api-response/tests?label=CI)](https://github.com/kennedy-osaze/laravel-api-response/actions?query=workflow%3ACI+branch%3Amain)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kennedy-osaze/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/kennedy-osaze/laravel-api-response)
-[![GitHub Action Status](https://img.shields.io/github/workflow/status/kennedy-osaze/laravel-api-response/main?label=CI)](https://github.com/kennedy-osaze/laravel-api-response/actions?query=workflow%3Amain+branch%3Amain)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/kennedy-osaze/laravel-api-response.svg?style=flat-square)](https://packagist.org/packages/kennedy-osaze/laravel-api-response)
 

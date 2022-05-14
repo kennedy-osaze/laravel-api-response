@@ -333,11 +333,9 @@ class ApiResponseTest extends TestCase
 
     public function testFailedValidationUsesCustomFormatValidationErrorCallback()
     {
-        ApiResponse::$formatValidationErrorsCallback = function (ValidatorContract $validator) {
-            return [
-                'error_messages' => $validator->errors()->all(),
-            ];
-        };
+        ApiResponse::registerValidationErrorFormatter(fn (ValidatorContract $validator) => [
+            'error_messages' => $validator->errors()->all(),
+        ]);
 
         $validator = Validator::make(['name' => null], ['name' => 'required', 'age' => 'required']);
 
@@ -353,7 +351,7 @@ class ApiResponseTest extends TestCase
         $this->assertArrayHasKey('error_messages', $responseData['errors']);
         $this->assertSame($validator->errors()->all(), $responseData['errors']['error_messages']);
 
-        ApiResponse::$formatValidationErrorsCallback = null;
+        ApiResponse::registerValidationErrorFormatter(null);
     }
 
     public function testSuccessfulResponseMessageIsTranslatedCorrectly()

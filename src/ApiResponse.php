@@ -2,6 +2,7 @@
 
 namespace KennedyOsaze\LaravelApiResponse;
 
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Validation\Validator;
@@ -30,7 +31,7 @@ class ApiResponse
 
     protected bool $shouldWrapResponse = true;
 
-    public static $formatValidationErrorsCallback;
+    protected static ?Closure $validationErrorFormatter = null;
 
     public function __construct(int $statusCode, string $message = null, $data = null, array $headers = [])
     {
@@ -80,8 +81,8 @@ class ApiResponse
 
     public function getValidationErrors(Validator $validator, Request $request): array
     {
-        if (is_callable(static::$formatValidationErrorsCallback)) {
-            return call_user_func(static::$formatValidationErrorsCallback, $validator, $request);
+        if (is_callable(static::$validationErrorFormatter)) {
+            return call_user_func(static::$validationErrorFormatter, $validator, $request);
         }
 
         $messages = array_unique(Arr::dot($validator->errors()->messages()));
@@ -205,6 +206,11 @@ class ApiResponse
             $data instanceof stdClass => (array) $data,
             default => $data
         };
+    }
+
+    public static function registerValidationErrorFormatter(?Closure $formatter)
+    {
+        static::$validationErrorFormatter = $formatter;
     }
 
     protected function getDataWrapper(): ?string

@@ -59,7 +59,11 @@ trait ConvertsExceptionToApiResponse
     protected function getExceptionResponse(Throwable $exception, Request $request): ?JsonResponse
     {
         if ($exception instanceof HttpResponseException) {
-            return ApiResponse::fromJsonResponse($exception->getResponse(), 'An error occurred');
+            $response = $exception->getResponse();
+
+            return $response instanceof JsonResponse
+                ? ApiResponse::fromJsonResponse($response, 'An error occurred')
+                : ApiResponse::create($response->getStatusCode(), 'An error occurred', ['content' => $response->getContent()]);
         }
 
         if ($exception instanceof ValidationException) {

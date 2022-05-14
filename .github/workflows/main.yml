@@ -1,4 +1,4 @@
-name: tests
+name: CI
 
 on:
   push:
@@ -7,6 +7,36 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}-v3
+
+      - name: Install dependencies
+        run: composer install --no-suggest --no-interaction --verbose
+
+      - name: Check platform requirements
+        run: composer check-platform-reqs --verbose
+
+      - name: PHP-CS-Fixer
+        run: ./vendor/bin/php-cs-fixer fix --dry-run --no-interaction --verbose
+
   test:
     runs-on: ${{ matrix.os }}
 
@@ -44,5 +74,8 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
+      - name: Check platform requirements
+        run: composer check-platform-reqs --verbose
+
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --debug --verbose

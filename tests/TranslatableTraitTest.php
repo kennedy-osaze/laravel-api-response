@@ -64,7 +64,7 @@ class TranslatableTraitTest extends TestCase
      */
     public function testGetTranslatedStringArray($key, $attributes, $prefix, $output)
     {
-        $prefix = $prefix ? 'laravel-api-response::'.$prefix : $prefix;
+        $prefix = $prefix ? 'api-response::'.$prefix : $prefix;
 
         $result = $this->class->getTranslatedStringArray($key, $attributes, $prefix);
 

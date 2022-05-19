@@ -363,8 +363,8 @@ class ApiResponseTest extends TestCase
 
         $this->assertTrue($responseDataA['success']);
         $this->assertTrue($responseDataB['success']);
-        $this->assertSame(__('laravel-api-response::success.example_code'), $responseDataA['message']);
-        $this->assertSame(__('laravel-api-response::success.Example response message'), $responseDataB['message']);
+        $this->assertSame(__('api-response::success.example_code'), $responseDataA['message']);
+        $this->assertSame(__('api-response::success.Example response message'), $responseDataB['message']);
     }
 
     public function testErrorResponseMessageIsTranslatedCorrectly()
@@ -374,7 +374,7 @@ class ApiResponseTest extends TestCase
         $responseData = ApiResponse::create(400, 'Example Error')->getData(true);
 
         $this->assertFalse($responseData['success']);
-        $this->assertSame(__('laravel-api-response::errors.Example Error'), $responseData['message']);
+        $this->assertSame(__('api-response::errors.Example Error'), $responseData['message']);
     }
 
     public function testResponseWithErrorCodeAsMessageIsTranslatedCorrectly()
@@ -384,7 +384,7 @@ class ApiResponseTest extends TestCase
         $responseData = ApiResponse::create(400, 'error_code.error_code_name')->getData(true);
 
         $this->assertFalse($responseData['success']);
-        $this->assertSame(__('laravel-api-response::errors.error_code.error_code_name'), $responseData['message']);
+        $this->assertSame(__('api-response::errors.error_code.error_code_name'), $responseData['message']);
         $this->assertArrayHasKey('error_code', $responseData);
         $this->assertSame('error_code_name', $responseData['error_code']);
     }
@@ -399,7 +399,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame('A normal message', $responseDataA['message']);
         $this->assertNotSame('example_code:status=hurray!', $responseDataB['message']);
 
-        $translation = __('laravel-api-response::success.example_code', ['status' => 'hurray!']);
+        $translation = __('api-response::success.example_code', ['status' => 'hurray!']);
 
         $this->assertSame($translation, $responseDataB['message']);
     }
@@ -410,7 +410,7 @@ class ApiResponseTest extends TestCase
 
         $this->assertNotSame('error_code.error_code_name:attribute=yes', $responseData['message']);
 
-        $translation = __('laravel-api-response::errors.error_code.error_code_name', ['attribute' => 'yes']);
+        $translation = __('api-response::errors.error_code.error_code_name', ['attribute' => 'yes']);
 
         $this->assertSame($translation, $responseData['message']);
         $this->assertArrayHasKey('error_code', $responseData);

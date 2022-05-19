@@ -141,7 +141,7 @@ class ApiResponse
             return [];
         }
 
-        $translationPrefix = 'laravel-api-response::'.config("api-response.translation.{$fileKey}");
+        $translationPrefix = 'api-response::'.config("api-response.translation.{$fileKey}");
 
         $translated = $this->extractTranslationDataFromResponsePayload($data, $message, $translationPrefix);
 

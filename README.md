@@ -31,7 +31,7 @@ You can publish the translation files using:
 php artisan vendor:publish --tag="api-response-translations"
 ```
 
-This will create a vendor folder (if it doesn't exists) in the `./resources/lang` folder of your project and inside, a `laravel-api-response/en` folder that has two files: `errors.php` and `success.php`. Both files are used for the translation of message strings in the JSON response sent out.
+This will create a vendor folder (if it doesn't exists) in the `lang` folder of your project and inside, a `api-response/en` folder that has two files: `errors.php` and `success.php`. Both files are used for the translation of message strings in the JSON response sent out.
 
 Optionally, you can publish the config file using:
 

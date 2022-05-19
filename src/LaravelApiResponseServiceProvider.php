@@ -44,7 +44,7 @@ class LaravelApiResponseServiceProvider extends ServiceProvider
         ], 'api-response-config');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-api-response'),
+            __DIR__."/../lang" => base_path("lang/vendor/api-response"),
         ], 'api-response-translations');
     }
 }

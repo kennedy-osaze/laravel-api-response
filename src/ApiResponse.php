@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use InvalidArgumentException;
@@ -141,7 +142,7 @@ class ApiResponse
             return [];
         }
 
-        $translationPrefix = 'api-response::'.config("api-response.translation.{$fileKey}");
+        $translationPrefix = Lang::has($message) ? null : 'api-response::'.config("api-response.translation.{$fileKey}");
 
         $translated = $this->extractTranslationDataFromResponsePayload($data, $message, $translationPrefix);
 
@@ -152,7 +153,7 @@ class ApiResponse
         return array_merge($translated, $this->pullErrorCodeFromData($data, $message, $translated['key']));
     }
 
-    protected function extractTranslationDataFromResponsePayload(array &$data, string $message, string $prefix)
+    protected function extractTranslationDataFromResponsePayload(array &$data, string $message, ?string $prefix = null)
     {
         $parameters = $this->parseStringToTranslationParameters($message);
 

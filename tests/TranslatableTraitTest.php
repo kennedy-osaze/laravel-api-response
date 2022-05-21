@@ -35,6 +35,8 @@ class TranslatableTraitTest extends TestCase
             ['string:key1=value1', ['name' => 'string', 'attributes' => ['key1' => 'value1']]],
             ['string:key1=value1|', ['name' => 'string', 'attributes' => ['key1' => 'value1']]],
             ['string:key1=value1|key2=value2', ['name' => 'string', 'attributes' => ['key1' => 'value1', 'key2' => 'value2']]],
+            ['api-response::string', ['name' => 'api-response::string', 'attributes' => []]],
+            ['api-response::string:key1=value1', ['name' => 'api-response::string', 'attributes' => ['key1' => 'value1']]],
         ];
     }
 

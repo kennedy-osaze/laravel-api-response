@@ -21,9 +21,10 @@ trait Translatable
      */
     public function parseStringToTranslationParameters(string $string): array
     {
-        $stringParts = explode(':', $string);
+        $stringParts = explode(':', Str::after($string, '::'));
 
-        $name = (string) array_shift($stringParts);
+        $prefix = Str::contains($string, '::') ? Str::before($string, '::').'::' : '';
+        $name = $prefix.array_shift($stringParts);
 
         $attributes = [];
 

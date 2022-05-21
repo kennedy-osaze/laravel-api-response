@@ -302,8 +302,6 @@ class ApiResponseTest extends TestCase
 
         $validator = Validator::make($request->all(), $rules, ['user.names.last.min' => 'Not less than 3']);
 
-        $errors = $validator->errors();
-
         $response = ApiResponse::fromFailedValidation($validator, $request);
         $responseData = $response->getData(true);
 
@@ -365,6 +363,15 @@ class ApiResponseTest extends TestCase
         $this->assertTrue($responseDataB['success']);
         $this->assertSame(__('api-response::success.example_code'), $responseDataA['message']);
         $this->assertSame(__('api-response::success.Example response message'), $responseDataB['message']);
+    }
+
+    public function testResponseMessageInTranslationFileIsTranslatedCorrectly()
+    {
+        $responseDataA = ApiResponse::create(200, 'Hello World')->getData(true);
+        $responseDataB = ApiResponse::create(200, 'api-response::success.example_code')->getData(true);
+
+        $this->assertSame('Hello World', $responseDataA['message']);
+        $this->assertSame(__('api-response::success.example_code'), $responseDataB['message']);
     }
 
     public function testErrorResponseMessageIsTranslatedCorrectly()

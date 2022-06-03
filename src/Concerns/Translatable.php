@@ -105,7 +105,7 @@ trait Translatable
         }
 
         if (count($parts = explode('::', $key)) === 1) {
-            return Lang::has($parts[0]);
+            return Lang::has(Str::before($parts[0], ':'));
         }
 
         return Lang::has($parts[0].'::'.Str::before($parts[1], ':'));

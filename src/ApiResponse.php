@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use JsonSerializable;
 use KennedyOsaze\LaravelApiResponse\Concerns\Translatable;
@@ -19,7 +20,7 @@ use stdClass;
 
 class ApiResponse
 {
-    use Conditionable, Translatable;
+    use Conditionable, Translatable, Macroable;
 
     protected $data;
 

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.0 - 2022-06-03
+
+**Full Changelog**: https://github.com/kennedy-osaze/laravel-api-response/compare/v1.1.0...v1.2.0
+
 ## 1.1.0 - 2022-05-21
 
 **Full Changelog**: https://github.com/kennedy-osaze/laravel-api-response/compare/v1.0.2...v1.1.0

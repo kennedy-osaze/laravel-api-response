@@ -424,8 +424,8 @@ return ApiResponse::create(400, 'error_code.error_code_name:status=FAILED');
 
 {
     "success": false,
-    "message": "Just a failed error message",
-    "error_code_name": "Example error message with status FAILED"
+    "message": "Example error message with status FAILED",
+    "error_code": "error_code_name"
 }
 
 ```

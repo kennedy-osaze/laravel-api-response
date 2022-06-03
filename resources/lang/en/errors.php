@@ -16,7 +16,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'example_code' => 'An example success message',
+    'example_code' => 'An example error message',
     'validation_failed' => 'Validation Failed.',
 
     /*

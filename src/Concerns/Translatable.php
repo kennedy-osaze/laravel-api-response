@@ -3,6 +3,7 @@
 namespace KennedyOsaze\LaravelApiResponse\Concerns;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 
 trait Translatable
@@ -88,5 +89,25 @@ trait Translatable
         }
 
         return ['key' => $key, 'message' => $message];
+    }
+
+    /**
+     * Determine if a translation exists.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function isTranslationKey(string $key): bool
+    {
+        if (Lang::has($key)) {
+            return true;
+        }
+
+        if (count($parts = explode('::', $key)) === 1) {
+            return Lang::has($parts[0]);
+        }
+
+        return Lang::has($parts[0].'::'.Str::before($parts[1], ':'));
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
@@ -81,6 +82,18 @@ trait ConvertsExceptionToApiResponse
         $data = method_exists($exception, 'getErrorData') ? call_user_func([$exception, 'getErrorData']) : null;
 
         return ApiResponse::create($statusCode, $message, $data, $headers);
+    }
+
+    protected function convertExceptionToArray(Throwable $e)
+    {
+        return config('app.debug') ? [
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'exception' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->map(fn ($trace) => Arr::except($trace, ['args']))->all(),
+        ] : [];
     }
 
     protected function shouldRenderHtmlOnException(): bool

@@ -82,4 +82,24 @@ class TranslatableTraitTest extends TestCase
             ['example_code', ['status' => 'dummy'], 'success', ['key' => 'example_code', 'message' => 'Example success message, dummy']],
         ];
     }
+
+    /**
+     * @dataProvider getIsTranslationKeyProvider
+     */
+    public function testIsTranslationKeyReturnsOutputCorrectly($input, $output)
+    {
+        $result = $this->class->isTranslationKey($input);
+
+        $this->assertSame($output, $result);
+    }
+
+    public function getIsTranslationKeyProvider()
+    {
+        return [
+            ['', false],
+            ['dummy message', false],
+            ['api-response::errors.example_code', true],
+            ['api-response::errors.error_code.error_code_name', true],
+        ];
+    }
 }

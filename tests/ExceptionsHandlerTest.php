@@ -105,7 +105,7 @@ class ExceptionsHandlerTest extends TestCase
         $response = $this->handler->renderApiResponse($exception, $this->app->request);
 
         $this->assertSame(500, $response->status());
-        collect(['message', 'exception', 'file', 'line', 'trace'])->each(fn ($key) =>
+        collect(['message', 'code', 'exception', 'file', 'line', 'trace'])->each(fn ($key) =>
             $this->assertArrayHasKey($key, $response->getData(true)['error'])
         );
     }
@@ -119,6 +119,15 @@ class ExceptionsHandlerTest extends TestCase
 
         $this->assertSame(500, $response->status());
         $this->assertStringContainsString('<!DOCTYPE html>', $response->getContent());
+    }
+
+    public function testHttpExceptionWithTranslationMessageReturnsCorrectResponseData()
+    {
+        $exception = new HttpException(400, 'api-response::errors.example_code');
+        $response = $this->handler->renderApiResponse($exception, $this->app->request);
+
+        $this->assertSame(400, $response->status());
+        $this->assertSame(__('api-response::errors.example_code'), $response->getData(true)['message']);
     }
 
     /**

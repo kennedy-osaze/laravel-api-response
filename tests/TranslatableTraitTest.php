@@ -3,6 +3,7 @@
 namespace KennedyOsaze\LaravelApiResponse\Tests;
 
 use KennedyOsaze\LaravelApiResponse\Tests\Fakes\TranslatableDummyClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class TranslatableTraitTest extends TestCase
 {
@@ -15,9 +16,7 @@ class TranslatableTraitTest extends TestCase
         $this->class = new TranslatableDummyClass();
     }
 
-    /**
-     * @dataProvider getTranslatableStringProvider
-     */
+    #[DataProvider('getTranslatableStringProvider')]
     public function testStringCanBeParsedAndTranslatableToParameterArray($input, $output)
     {
         $result = $this->class->parseStringToTranslationParameters($input);
@@ -25,7 +24,7 @@ class TranslatableTraitTest extends TestCase
         $this->assertSame($output, $result);
     }
 
-    public function getTranslatableStringProvider()
+    public static function getTranslatableStringProvider()
     {
         return [
             ['', ['name' => '', 'attributes' => []]],
@@ -40,9 +39,7 @@ class TranslatableTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getTranslatableArrayProvider
-     */
+    #[DataProvider('getTranslatableArrayProvider')]
     public function testTranslatableParameterArrayCanBeConvertedToString($string, $attributes, $output)
     {
         $result = $this->class->transformToTranslatableString($string, $attributes);
@@ -50,7 +47,7 @@ class TranslatableTraitTest extends TestCase
         $this->assertSame($output, $result);
     }
 
-    public function getTranslatableArrayProvider()
+    public static function getTranslatableArrayProvider()
     {
         return [
             ['', [], ''],
@@ -61,9 +58,7 @@ class TranslatableTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getTranslationProvider
-     */
+    #[DataProvider('getTranslationProvider')]
     public function testGetTranslatedStringArray($key, $attributes, $prefix, $output)
     {
         $prefix = $prefix ? 'api-response::'.$prefix : $prefix;
@@ -73,7 +68,7 @@ class TranslatableTraitTest extends TestCase
         $this->assertSame($output, $result);
     }
 
-    public function getTranslationProvider()
+    public static function getTranslationProvider()
     {
         return [
             ['', [], null, ['key' => '', 'message' => '']],
@@ -83,9 +78,7 @@ class TranslatableTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getIsTranslationKeyProvider
-     */
+    #[DataProvider('getIsTranslationKeyProvider')]
     public function testIsTranslationKeyReturnsOutputCorrectly($input, $output)
     {
         $result = $this->class->isTranslationKey($input);
@@ -93,7 +86,7 @@ class TranslatableTraitTest extends TestCase
         $this->assertSame($output, $result);
     }
 
-    public function getIsTranslationKeyProvider()
+    public static function getIsTranslationKeyProvider()
     {
         return [
             ['', false],

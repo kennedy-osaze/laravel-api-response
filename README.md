@@ -13,10 +13,10 @@ Laravel API Response is a package that helps to provide and render a consistent 
 
 ## Version Compatibility
 
- Laravel                        | Laravel API Response
-:-------------------------------|:----------------------
- 9.x (Requires PHP >= 8.0)      | <=1.2
- 9.x/10.x (Requires PHP >= 8.1) | >=1.3
+ Laravel  | Laravel API Response
+:---------|:----------------------
+ 9.x      | 1.x
+ 10.x     | 2.x
 
 ## Installation
 

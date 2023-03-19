@@ -79,4 +79,4 @@ jobs:
         run: composer check-platform-reqs --verbose
 
       - name: Execute tests
-        run: vendor/bin/phpunit --debug --verbose
+        run: vendor/bin/phpunit

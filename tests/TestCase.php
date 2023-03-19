@@ -5,9 +5,9 @@ namespace KennedyOsaze\LaravelApiResponse\Tests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use KennedyOsaze\LaravelApiResponse\LaravelApiResponseServiceProvider;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Orchestra\Testbench\TestCase as Orchestra;
 
-abstract class TestCase extends OrchestraTestCase
+class TestCase extends Orchestra
 {
     use RefreshDatabase;
 

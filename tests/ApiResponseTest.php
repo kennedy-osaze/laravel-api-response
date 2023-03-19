@@ -15,6 +15,7 @@ use KennedyOsaze\LaravelApiResponse\ApiResponse;
 use KennedyOsaze\LaravelApiResponse\Tests\Fakes\DummyModel;
 use KennedyOsaze\LaravelApiResponse\Tests\Fakes\DummyResource;
 use KennedyOsaze\LaravelApiResponse\Tests\Fakes\DummyResourceCollection;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class ApiResponseTest extends TestCase
 {
@@ -161,9 +162,7 @@ class ApiResponseTest extends TestCase
         DummyModel::migrate();
 
         $model = DummyModel::create(['name' => 'Kennedy']);
-        DummyModel::insert(Collection::times(5, fn ($number) => [
-            'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now(),
-        ])->toArray());
+        Collection::times(5)->each(fn ($number) => DummyModel::create(['name' => 'Kennedy:'.$number]));
 
         $resource = new DummyResource($model);
         $collection = DummyResource::collection(DummyModel::all());
@@ -225,9 +224,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame($collectionE->collection->map->resolve()->toArray(), $responseDataE['data']['data']['data']);
     }
 
-    /**
-     * @dataProvider getRandomDataTypeProvider
-     */
+    #[DataProvider('getRandomDataTypeProvider')]
     public function testResponseWithRandomDataTypeContent($input, $result)
     {
         $responseData = ApiResponse::create(200, 'A dummy message', $input)->getData(true);
@@ -235,7 +232,7 @@ class ApiResponseTest extends TestCase
         $this->assertSame($result, $responseData['data']);
     }
 
-    public function getRandomDataTypeProvider()
+    public static function getRandomDataTypeProvider()
     {
         return [
             'test object' => [(object) ['type' => 'string'], ['type' => 'string']],

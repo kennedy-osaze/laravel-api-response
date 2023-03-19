@@ -66,9 +66,9 @@ class RendersApiResponseTraitTest extends TestCase
     {
         DummyModel::migrate();
 
-        DummyModel::insert(Collection::times(5, fn ($number) => [
+        Collection::times(3)->each(fn ($number) => DummyModel::create([
             'name' => "Kennedy:{$number}", 'created_at' => now(), 'updated_at' => now(),
-        ])->toArray());
+        ]));
 
         $message = 'Dummy message';
 
@@ -80,8 +80,8 @@ class RendersApiResponseTraitTest extends TestCase
         $response2 = $this->controller->resourceCollectionResponse($data2, $message);
         $response3 = $this->controller->resourceCollectionResponse($data3, $message, false);
 
-        collect([$response1, $response2, $response3])->each(fn ($response) => $this->assertSame('Dummy message', $response->getData(true)['message'])
-        );
+        collect([$response1, $response2, $response3])
+            ->each(fn ($response) => $this->assertSame('Dummy message', $response->getData(true)['message']));
 
         $this->assertSame(DummyModel::all(['id', 'name'])->toArray(), $response1->getData(true)['data']);
         $this->assertTrue(Arr::has($response2->getData(true), ['data.data', 'data.links', 'data.meta']));

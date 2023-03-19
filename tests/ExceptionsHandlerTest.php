@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use KennedyOsaze\LaravelApiResponse\Tests\Fakes\ExceptionHandler;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -130,9 +131,7 @@ class ExceptionsHandlerTest extends TestCase
         $this->assertSame(__('api-response::errors.example_code'), $response->getData(true)['message']);
     }
 
-    /**
-     * @dataProvider getHttpResponseExceptionProvider
-     */
+    #[DataProvider('getHttpResponseExceptionProvider')]
     public function testHttpResponseExceptionReturnsResponseDataCorrectly($exception, $responseData)
     {
         $response = $this->handler->renderApiResponse($exception, $this->app->request);
@@ -140,7 +139,7 @@ class ExceptionsHandlerTest extends TestCase
         $this->assertSame($responseData, $response->getData(true));
     }
 
-    public function getHttpResponseExceptionProvider()
+    public static function getHttpResponseExceptionProvider()
     {
         return [
             [
